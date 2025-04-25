@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Parent Dashboard | Grow & Play</title>
+    <link rel="stylesheet" href="styles.css">
+  
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image/logo.jpg" alt="Logo" class="logo-img">
+            <h2>Grow & Play</h2>
+        </div>
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="coaches.html">Coaches</a></li>
+                <li><a href="Adm.html">Administrator Dashboard</a></li>
+                <li><a href="parents.html">Parent's Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <nav class="breadcrumbs">
+        <a href="index.html">Home</a> > <span>Parent Dashboard</span>
+    </nav>
+
+    <section class="registered-kids">
+        <h1>Registered Kids</h1>
+        <div class="sort-options">
+            <label for="sort">Sort By:</label>
+            <select id="sort">
+                <option value="name-asc">Name (A-Z)</option>
+                <option value="name-desc">Name (Z-A)</option>
+                <option value="age-asc">Age (Oldest first)</option>
+                <option value="age-desc">Age (Youngest first)</option>
+            </select>
+        </div>
+        <div class="kids-grid" id="kidsContainer"></div>
+    </section>
+
+    <section class="parent-dashboard">
+        <h1 class="pdashboard-title">Parent Dashboard</h1>
+        <div class="pdashboard-grid">
+            <div class="pdashboard-card">
+                <img src="image/enrollment.jpg" alt="Activity Enrollment" class="pdashboard-image">
+                <div class="pdashboard-content">
+                    <h2>Activity Enrollment</h2>
+                    <p>Register your child for exciting activities that enhance their skills and creativity.</p>
+                    <a href="activity-enrollment.html" class="pdashboard-button">Enroll Now</a>
+                </div>
+            </div>
+
+            <div class="pdashboard-card">
+                <img src="image/register.jpg" alt="Register New Kid" class="pdashboard-image">
+                <div class="pdashboard-content">
+                    <h2>Register New Kid</h2>
+                    <p>Add a new child to your account and explore available activities tailored for them.</p>
+                    <a href="register-kid.html" class="pdashboard-button">Register Now</a>
+                </div>
+            </div>
+
+            <div class="pdashboard-card">
+                <img src="image/evaluation.jpg" alt="Activity Evaluation" class="pdashboard-image">
+                <div class="pdashboard-content">
+                    <h2>Activity Evaluation</h2>
+                    <p>Provide feedback and track your child's progress in enrolled activities.</p>
+                    <a href="activity-evaluation.html" class="pdashboard-button">Evaluate Now</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <footer>
+        <div class="contact-info">
+            <div class="contact-item">
+                <img src="image/watsap.jpg" alt="WhatsApp" class="icon">
+                <p>+966554433221</p>
+            </div>
+            <div class="contact-item">
+                <img src="image/gmaill.jpg" alt="Email" class="icon">
+                <p>GrowNplay@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-logo">
+            <span>Grow & Play</span>
+            <img src="image/logo.jpg" alt="Logo" class="logo-img">
+        </div>
+        <hr>
+        <div class="social-media">
+            <img src="image/twetter.jpg" alt="X" class="icon">
+            <img src="image/instagram.jpg" alt="Instagram" class="icon"><img src="image/facebook.jpg" alt="Facebook" class="icon">
+            <img src="image/linkedin.jpg" alt="LinkedIn" class="icon">
+        </div>
+        <p>Copyright 2025 Grow & Play. All rights reserved.</p>
+    </footer>
+<script src="main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        // Load kids data
+        let kids = JSON.parse(localStorage.getItem('kids')) || [];
+        
+        if (kids.length === 0) {
+            kids = [
+                {
+                    name: "Ahmad",
+                    dob: "2015-06-14",
+                    gender: "male",
+                    weight: "30 kg",
+                    height: "120 cm",
+                    phone: "5551234567",
+                    activities: ["Visual Art", "Cake Decoration"],
+                    photo: "Ahmad.jpg"
+                },
+                {
+                    name: "Lina",
+                    dob: "2016-05-10",
+                    gender: "female",
+                    weight: "35 kg",
+                    height: "125 cm",
+                    phone: "5551234567",
+                    activities: ["Climbing", "Carpentry"],
+                    photo: "Lina.jpg"
+                },
+                {
+                    name: "Omar",
+                    dob: "2017-08-19",
+                    gender: "male",
+                    weight: "20 kg",
+                    height: "100 cm",
+                    phone: "5551234567",
+                    activities: ["Skating", "Puzzle Solving"],
+                    photo: "Omar.jpg"
+                }
+            ];
+            localStorage.setItem('kids', JSON.stringify(kids));
+        }
+
+        function calculateAge(dob) {
+            const birthDate = new Date(dob);
+            const today = new Date();
+            let age = today.getFullYear() - birthDate.getFullYear();
+            const monthDiff = today.getMonth() - birthDate.getMonth();
+            if (monthDiff < 0 || (monthDiff === 0 && today.getDate() < birthDate.getDate())) {
+                age--;
+            }
+            return age;
+        }
+
+        function displayKids(kidsToDisplay) {
+            const container = document.getElementById('kidsContainer');
+            container.innerHTML = '';
+            
+            kidsToDisplay.forEach(kid => {
+                const age = calculateAge(kid.dob);
+                const card = document.createElement('div');
+                card.className = 'kid-card';
+                card.innerHTML = `
+                    <img src="image/${kid.photo}" alt="${kid.name}" class="child-photo">
+                    <h2>${kid.name}</h2>
+                    <p><strong>Date of birth:</strong> ${kid.dob}</p>
+                    <p><strong>Age:</strong> ${age} years</p>
+                    <p><strong>Gender:</strong> ${kid.gender === 'male' ? 'Male' : 'Female'}</p>
+                    <p><strong>Weight:</strong> ${kid.weight}</p>
+                    <p><strong>Height:</strong> ${kid.height}</p>
+                    <p><strong>Parent Phone:</strong> ${kid.phone}</p>
+                    <h3>Enrolled Activities:</h3>
+                    <ul>
+                        ${kid.activities.map(activity => `<li>${activity}</li>`).join('')}
+                    </ul>
+                `;
+                container.appendChild(card);
+            });
+        }
+
+        // Initial display
+        displayKids(kids);
+
+        // Sort functionality
+        const sortSelect = document.getElementById('sort');
+        if (sortSelect) {
+            sortSelect.addEventListener('change', function() {
+                const value = this.value;
+                let sorted = [...kids];
+
+                if (value === 'name-asc') {
+                    sorted.sort((a, b) => a.name.localeCompare(b.name));
+                } else if (value === 'name-desc') {
+                    sorted.sort((a, b) => b.name.localeCompare(a.name));
+                } else if (value === 'age-asc') {
+                    sorted.sort((a, b) => new Date(a.dob) - new Date(b.dob));
+                } else if (value === 'age-desc') {
+                    sorted.sort((a, b) => new Date(b.dob) - new Date(a.dob));
+                }
+
+                displayKids(sorted);
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,139 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Evaluation</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image/logo.jpg" alt="Logo" class="logo-img">
+            <h2>Grow & Play</h2>
+        </div>
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="coaches.html">Coaches</a></li>
+                <li><a href="Adm.html">Administrator Dashboard</a></li>
+                <li><a href="parents.html">Parent's Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <nav class="breadcrumbs">
+        <a href="index.html">Home</a> > <a href="parents.html">Parent Dashboard</a> > <span>Activity Evaluation</span>
+    </nav>
+
+    <main class="form-container">
+        <h1>Activity Evaluation</h1>
+        <form id="evaluationForm">
+            <div class="form-group">
+                <h3>Select Child:</h3>
+                <select name="kid" id="kid" required>
+                    <option value="" disabled selected>Choose your child</option>
+                    <option value="ahmad">Ahmad</option>
+                    <option value="lina">Lina</option>
+                    <option value="omar">Omar</option>
+                </select>
+            </div>
+
+            <div class="form-group">
+                <h3>Select Activity:</h3>
+                <select name="activity" id="activity" required>
+                    <option value="" disabled selected>Select activity</option>
+                    <option value="visual-arts">Visual Arts</option>
+                    <option value="cake-decorating">Cake Decorating</option>
+                    <option value="climbing">Climbing</option>
+                    <option value="carpentry">Carpentry</option>
+                    <option value="skating">Skating</option>
+                    <option value="puzzle-solving">Puzzle Solving</option>
+                </select>
+            </div>
+
+            <h3>How was your child's experience?</h3>
+            <div class="rating">
+                <label><input type="radio" name="rating" value="1" required> 1 (Poor)</label>
+                <label><input type="radio" name="rating" value="2"> 2</label><label><input type="radio" name="rating" value="3"> 3</label>
+                <label><input type="radio" name="rating" value="4"> 4</label>
+                <label><input type="radio" name="rating" value="5"> 5 (Excellent)</label>
+            </div>
+
+            <div class="form-group">
+                <label for="comments">Additional feedback:</label>
+                <textarea name="comments" id="comments" placeholder="Please share your feedback about the activity..."></textarea>
+            </div>
+
+            <button type="submit" class="submit-btn">Submit Evaluation</button>
+        </form>
+        <div id="evaluationResult"></div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <div class="contact-item">
+                <img src="image/watsap.jpg" alt="WhatsApp" class="icon">
+                <p>+966554433221</p>
+            </div>
+            <div class="contact-item">
+                <img src="image/gmaill.jpg" alt="Email" class="icon">
+                <p>GrowNplay@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-logo">
+            <span>Grow & Play</span>
+            <img src="image/logo.jpg" alt="Logo" class="logo-img">
+        </div>
+        <hr>
+        <div class="social-media">
+            <img src="image/twetter.jpg" alt="X" class="icon">
+            <img src="image/instagram.jpg" alt="Instagram" class="icon">
+            <img src="image/facebook.jpg" alt="Facebook" class="icon">
+            <img src="image/linkedin.jpg" alt="LinkedIn" class="icon">
+        </div>
+        <p>Copyright 2025 Grow & Play. All rights reserved.</p>
+    </footer>
+<script src="main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const evaluationForm = document.getElementById('evaluationForm');
+        const resultDiv = document.getElementById('evaluationResult');
+
+        if (evaluationForm) {
+            evaluationForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const kid = document.getElementById('kid').value;
+                const activity = document.getElementById('activity').value;
+                const rating = document.querySelector('input[name="rating"]:checked').value;
+                const comments = document.getElementById('comments').value;
+                
+                // Simulate saving to localStorage
+                let evaluations = JSON.parse(localStorage.getItem('evaluations')) || [];
+                evaluations.push({
+                    kid: kid,
+                    activity: activity,
+                    rating: rating,
+                    comments: comments,
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('evaluations', JSON.stringify(evaluations));
+                
+                // Show success message
+                resultDiv.innerHTML = `
+                    <div class="success-message">
+                        Thank you for your evaluation! Your feedback has been recorded.
+                    </div>
+                `;
+                
+                // Reset form
+                evaluationForm.reset();
+            });
+        }
+    });
+    </script>
+</body>
+</html>

@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Activity Enrollment</title>
+    <link rel="stylesheet" href="styles.css">
+    
+</head>
+<body>
+    <header>
+        <div class="logo">
+            <img src="image/logo.jpg" alt="Logo" class="logo-img">
+            <h2>Grow & Play</h2>
+        </div>
+        <nav class="navbar">
+            <ul class="navbar-menu">
+                <li><a href="index.html">Home</a></li>
+                <li><a href="activities.html">Activities</a></li>
+                <li><a href="coaches.html">Coaches</a></li>
+                <li><a href="Adm.html">Administrator Dashboard</a></li>
+                <li><a href="parents.html">Parent's Dashboard</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <nav class="breadcrumbs">
+        <a href="index.html">Home</a> > <a href="parents.html">Parent Dashboard</a> > <span>Activity Enrollment</span>
+    </nav>
+
+    <main class="form-container">
+        <h1>Activity Enrollment</h1>
+        <form id="enrollmentForm">
+            <div class="form-group">
+                <h3>Select Activity:</h3>
+                <select name="activity" id="activity" aria-label="Activity selection" required>
+                    <optgroup label="Coach JAMES CARTER">
+                        <option value="visual-arts">Visual Arts</option>
+                        <option value="cake-decorating">Cake Decorating</option>
+                        <option value="puzzle-solving">Puzzle Solving</option>
+                    </optgroup>
+                    <optgroup label="Coach OLIVIA MITCHELL">
+                        <option value="climbing">Climbing</option>
+                        <option value="carpentry">Carpentry</option>
+                        <option value="skating">Skating</option>
+                    </optgroup>
+                    <optgroup label="Coach SOPHIA ANDERSON">
+                        <option value="visual-arts">Visual Arts</option>
+                        <option value="cake-decorating">Cake Decorating</option>
+                    </optgroup>
+                </select>
+            </div>
+            <div class="form-group">
+                <h3>Select Child:</h3>
+                <select name="kid" id="kid" required>
+                    <option value="" disabled selected>Choose your child</option>
+                    <option value="ahmad">Ahmad</option>
+                    <option value="lina">Lina</option>
+                    <option value="omar">Omar</option>
+                </select>
+            </div>
+            <button type="submit" class="submit-btn">Enroll</button>
+        </form>
+        <div id="enrollmentResult"></div>
+    </main>
+
+    <footer>
+        <div class="contact-info">
+            <div class="contact-item">
+                <img src="image/watsap.jpg" alt="WhatsApp" class="icon">
+                <p>+966554433221</p>
+            </div><div class="contact-item">
+                <img src="image/gmaill.jpg" alt="Email" class="icon">
+                <p>GrowNplay@gmail.com</p>
+            </div>
+        </div>
+        <div class="footer-logo">
+            <span>Grow & Play</span>
+            <img src="image/logo.jpg" alt="Logo" class="logo-img">
+        </div>
+        <hr>
+        <div class="social-media">
+            <img src="image/twetter.jpg" alt="X" class="icon">
+            <img src="image/instagram.jpg" alt="Instagram" class="icon">
+            <img src="image/facebook.jpg" alt="Facebook" class="icon">
+            <img src="image/linkedin.jpg" alt="LinkedIn" class="icon">
+        </div>
+        <p>Copyright 2025 Grow & Play. All rights reserved.</p>
+    </footer>
+<script src="main.js"></script>
+    <script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const enrollmentForm = document.getElementById('enrollmentForm');
+        const resultDiv = document.getElementById('enrollmentResult');
+
+        if (enrollmentForm) {
+            enrollmentForm.addEventListener('submit', function(e) {
+                e.preventDefault();
+                
+                const activity = document.getElementById('activity').value;
+                const kid = document.getElementById('kid').value;
+                
+                // Simulate saving to localStorage
+                let enrollments = JSON.parse(localStorage.getItem('enrollments')) || [];
+                enrollments.push({
+                    kid: kid,
+                    activity: activity,
+                    date: new Date().toISOString()
+                });
+                localStorage.setItem('enrollments', JSON.stringify(enrollments));
+                
+                // Show success message
+                resultDiv.innerHTML = `
+                    <div class="success-message">
+                        Successfully enrolled ${document.getElementById('kid').options[document.getElementById('kid').selectedIndex].text} 
+                        in ${document.getElementById('activity').options[document.getElementById('activity').selectedIndex].text}!
+                    </div>
+                `;
+                
+                // Reset form
+                enrollmentForm.reset();
+            });
+        }
+    });
+    </script>
+</body>
+</html>
