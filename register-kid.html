@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     
 </head>
-<body>
+<body class="pastel-theme">
     <header>
         <div class="logo">
             <img src="image/logo.jpg" alt="Logo" class="logo-img">
@@ -35,144 +35,98 @@
                 <label for="first-name">First Name:</label>
                 <input type="text" id="first-name" name="first-name" required>
             </div>
-
+    
             <div class="form-group">
                 <label for="last-name">Last Name:</label>
                 <input type="text" id="last-name" name="last-name" required>
             </div>
-
+    
             <div class="form-group">
                 <label for="dob">Date of Birth:</label>
                 <input type="date" id="dob" name="dob" required max="2020-12-31">
             </div>
-
+    
             <div class="form-group">
-                <label for="child-gender">Gender:</label>
-                <select id="child-gender" name="child-gender" required>
+                <label for="gender">Gender:</label>
+                <select id="gender" name="gender" required>
                     <option value="">Select</option>
                     <option value="male">Male</option>
                     <option value="female">Female</option>
                 </select>
             </div>
-
+    
             <div class="form-group">
-                <label for="weight">Weight (kg):</label>
-                <input type="number" id="weight" name="weight" min="10" max="100" required>
+                <label for="email">Parent Email:</label>
+                <input type="email" id="email" name="email" required>
             </div>
-
+    
             <div class="form-group">
-                <label for="height">Height (cm):</label><input type="number" id="height" name="height" min="50" max="200" required>
+                <label for="contact">Contact Number:</label>
+                <input type="text" id="contact" name="contact" required pattern="\d{10}">
             </div>
-
+    
             <div class="form-group">
-                <label for="parent-phone">Parent Phone:</label>
-                <input type="tel" id="parent-phone" name="parent-phone" pattern="[0-9]{10}" required>
+                <label for="photo">Upload Kid's Photo:</label>
+                <input type="file" id="photo" accept="image/*" required>
             </div>
-
+    
             <div class="form-group">
-                <label for="child-photo">Child Photo:</label>
-                <input type="file" id="child-photo" name="child-photo" accept="image/*">
+                <button type="button" onclick="validateForm()">Submit</button>
+                <button type="button" onclick="printKid()">Print Info</button>
             </div>
-
-            <div class="form-group">
-                <fieldset>
-                    <legend>Select Activities:</legend>
-                    <div class="activities-grid">
-                        <label><input type="checkbox" name="activity" value="Visual Art"> Visual Art</label>
-                        <label><input type="checkbox" name="activity" value="Cake Decoration"> Cake Decoration</label>
-                        <label><input type="checkbox" name="activity" value="Climbing"> Climbing</label>
-                        <label><input type="checkbox" name="activity" value="Carpentry"> Carpentry</label>
-                        <label><input type="checkbox" name="activity" value="Skating"> Skating</label>
-                        <label><input type="checkbox" name="activity" value="Puzzle Solving"> Puzzle Solving</label>
-                    </div>
-                </fieldset>
-            </div>
-
-            <button type="submit" class="submit-btn">Register</button>
         </form>
-
-        <div id="registrationResult" class="result-container"></div>
     </main>
-
-    <footer>
-        <div class="contact-info">
-            <div class="contact-item">
-                <img src="image/watsap.jpg" alt="WhatsApp" class="icon">
-                <p>+966554433221</p>
-            </div>
-            <div class="contact-item">
-                <img src="image/gmaill.jpg" alt="Email" class="icon">
-                <p>GrowNplay@gmail.com</p>
-            </div>
-        </div>
-        <div class="footer-logo">
-            <span>Grow & Play</span>
-            <img src="image/logo.jpg" alt="Logo" class="logo-img">
-        </div>
-        <hr>
-        <div class="social-media">
-            <img src="image/twetter.jpg" alt="X" class="icon">
-            <img src="image/instagram.jpg" alt="Instagram" class="icon">
-            <img src="image/facebook.jpg" alt="Facebook" class="icon">
-            <img src="image/linkedin.jpg" alt="LinkedIn" class="icon">
-        </div>
-        <p>Copyright 2025 Grow & Play. All rights reserved.</p>
-    </footer>
-<script src="main.js"></script>
+    
     <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const registerForm = document.getElementById('registerForm');
-        const resultDiv = document.getElementById('registrationResult');
-
-        if (registerForm) {
-            registerForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                // Get form values
-                const firstName = document.getElementById('first-name').value;
-                const lastName = document.getElementById('last-name').value;
-                const dob = document.getElementById('dob').value;
-                const gender = document.getElementById('child-gender').value;
-                const weight = document.getElementById('weight').value;
-                const height = document.getElementById('height').value;
-                const phone = document.getElementById('parent-phone').value;
-                
-                // Get selected activities
-                const activityCheckboxes = document.querySelectorAll('input[name="activity"]:checked');
-                const activities = Array.from(activityCheckboxes).map(cb => cb.value);
-                
-                // Handle file upload (simulated - in real app you would upload to server)
-                const photoInput = document.getElementById('child-photo');
-                const photoName = photoInput.files.length > 0 ? photoInput.files[0].name : 'default.jpg';
-// Create new kid object
-                const newKid = {
-                    name: ${firstName} ${lastName},
-                    dob: dob,
-                    gender: gender,
-                    weight: ${weight} kg,
-                    height: ${height} cm,
-                    phone: phone,
-                    activities: activities,
-                    photo: photoName
-                };
-                
-                // Save to localStorage
-                let kids = JSON.parse(localStorage.getItem('kids')) || [];
-                kids.push(newKid);
-                localStorage.setItem('kids', JSON.stringify(kids));
-                
-                // Show success message
-                resultDiv.innerHTML = `
-                    <div class="success-message">
-                        Successfully registered ${firstName} ${lastName}!
-                    </div>
-                `;
-                
-                // Reset form
-                registerForm.reset();
-            });
+    function validateForm() {
+        const fname = document.getElementById("first-name").value.trim();
+        const lname = document.getElementById("last-name").value.trim();
+        const dob = document.getElementById("dob").value;
+        const gender = document.getElementById("gender").value;
+        const email = document.getElementById("email").value;
+        const contact = document.getElementById("contact").value;
+        const photoInput = document.getElementById("photo");
+    
+        const errors = [];
+        if (!fname || /^\d/.test(fname)) errors.push("First name must not start with a number.");
+        if (!lname || /^\d/.test(lname)) errors.push("Last name must not start with a number.");
+        if (!dob || new Date(dob) > new Date("2020-12-31")) errors.push("Child must be older than 5 years.");
+        if (!gender) errors.push("Please select gender.");
+        if (!email.includes("@")) errors.push("Invalid email.");
+        if (!/^\d{10}$/.test(contact)) errors.push("Contact number must be 10 digits.");
+        if (photoInput.files.length === 0) errors.push("Please upload a photo.");
+    
+        if (errors.length > 0) {
+            alert(errors.join("\n"));
+            return;
         }
-    });
+    
+        const kid = {
+            name: fname + " " + lname,
+            dob, gender, email, contact
+        };
+    
+        localStorage.setItem("kidInfo", JSON.stringify(kid));
+        alert("Kid registered successfully!");
+    }
+    
+    function printKid() {
+        const kid = JSON.parse(localStorage.getItem("kidInfo"));
+        if (!kid) {
+            alert("No registered kid info to print.");
+            return;
+        }
+    
+        const win = window.open("", "", "width=500,height=600");
+        win.document.write(`<h2>Kid Registration</h2>`);
+        win.document.write(`<p><strong>Name:</strong> ${kid.name}</p>`);
+        win.document.write(`<p><strong>DOB:</strong> ${kid.dob}</p>`);
+        win.document.write(`<p><strong>Gender:</strong> ${kid.gender}</p>`);
+        win.document.write(`<p><strong>Email:</strong> ${kid.email}</p>`);
+        win.document.write(`<p><strong>Contact:</strong> ${kid.contact}</p>`);
+        win.document.write(`<p><strong>Photo:</strong> [Uploaded by user, not displayable here]</p>`);
+        win.print();
+    }
     </script>
 </body>
 </html>

@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     
 </head>
-<body>
+<body class="pastel-theme">
     <header>
         <div class="logo">
             <img src="image/logo.jpg" alt="Logo" class="logo-img">
@@ -30,47 +30,61 @@
 
     <main class="form-container">
         <h1>Activity Evaluation</h1>
+    
         <form id="evaluationForm">
             <div class="form-group">
-                <h3>Select Child:</h3>
-                <select name="kid" id="kid" required>
-                    <option value="" disabled selected>Choose your child</option>
-                    <option value="ahmad">Ahmad</option>
-                    <option value="lina">Lina</option>
-                    <option value="omar">Omar</option>
+                <label for="kid">Select Child:</label>
+                <select id="kid" required>
+                    <option value="">Choose your child</option>
+                    <option value="Ahmad">Ahmad</option>
+                    <option value="Lina">Lina</option>
+                    <option value="Omar">Omar</option>
                 </select>
             </div>
-
+    
             <div class="form-group">
-                <h3>Select Activity:</h3>
-                <select name="activity" id="activity" required>
-                    <option value="" disabled selected>Select activity</option>
-                    <option value="visual-arts">Visual Arts</option>
-                    <option value="cake-decorating">Cake Decorating</option>
-                    <option value="climbing">Climbing</option>
-                    <option value="carpentry">Carpentry</option>
-                    <option value="skating">Skating</option>
-                    <option value="puzzle-solving">Puzzle Solving</option>
+                <label for="activity">Select Activity:</label>
+                <select id="activity" required>
+                    <option value="">Select activity</option>
+                    <option value="Visual Arts">Visual Arts</option>
+                    <option value="Cake Decorating">Cake Decorating</option>
+                    <option value="Climbing">Climbing</option>
+                    <option value="Carpentry">Carpentry</option>
+                    <option value="Skating">Skating</option>
                 </select>
             </div>
-
-            <h3>How was your child's experience?</h3>
-            <div class="rating">
-                <label><input type="radio" name="rating" value="1" required> 1 (Poor)</label>
-                <label><input type="radio" name="rating" value="2"> 2</label><label><input type="radio" name="rating" value="3"> 3</label>
-                <label><input type="radio" name="rating" value="4"> 4</label>
-                <label><input type="radio" name="rating" value="5"> 5 (Excellent)</label>
-            </div>
-
+    
             <div class="form-group">
-                <label for="comments">Additional feedback:</label>
-                <textarea name="comments" id="comments" placeholder="Please share your feedback about the activity..."></textarea>
+                <label for="rating">Rating:</label>
+                <select id="rating" required>
+                    <option value="">Select rating</option>
+                    <option value="1">1 - Poor</option>
+                    <option value="2">2 - Fair</option>
+                    <option value="3">3 - Good</option>
+                    <option value="4">4 - Very Good</option>
+                    <option value="5">5 - Excellent</option>
+                </select>
             </div>
-
-            <button type="submit" class="submit-btn">Submit Evaluation</button>
+    
+            <button type="button" onclick="submitEvaluation()">Submit</button>
         </form>
-        <div id="evaluationResult"></div>
     </main>
+    
+    <script>
+    function submitEvaluation() {
+        const kid = document.getElementById("kid").value;
+        const activity = document.getElementById("activity").value;
+        const rating = document.getElementById("rating").value;
+    
+        if (!kid || !activity || !rating) {
+            alert("Please make sure all fields are selected.");
+            return;
+        }
+    
+        alert(`Thank you for your feedback!\nYou're rating for activity#${activity} is ${rating}`);
+        window.location.href = "index.html";
+    }
+    </script>
 
     <footer>
         <div class="contact-info">

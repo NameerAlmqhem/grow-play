@@ -7,7 +7,7 @@
     <link rel="stylesheet" href="styles.css">
     
 </head>
-<body>
+<body class="pastel-theme">
     <header>
         <div class="logo">
             <img src="image/logo.jpg" alt="Logo" class="logo-img">
@@ -30,40 +30,140 @@
 
     <main class="form-container">
         <h1>Activity Enrollment</h1>
+    
         <form id="enrollmentForm">
             <div class="form-group">
-                <h3>Select Activity:</h3>
-                <select name="activity" id="activity" aria-label="Activity selection" required>
-                    <optgroup label="Coach JAMES CARTER">
-                        <option value="visual-arts">Visual Arts</option>
-                        <option value="cake-decorating">Cake Decorating</option>
-                        <option value="puzzle-solving">Puzzle Solving</option>
-                    </optgroup>
-                    <optgroup label="Coach OLIVIA MITCHELL">
-                        <option value="climbing">Climbing</option>
-                        <option value="carpentry">Carpentry</option>
-                        <option value="skating">Skating</option>
-                    </optgroup>
-                    <optgroup label="Coach SOPHIA ANDERSON">
-                        <option value="visual-arts">Visual Arts</option>
-                        <option value="cake-decorating">Cake Decorating</option>
-                    </optgroup>
-                </select>
+                <label for="kidSelect">Select Kid:</label>
+                <select id="kidSelect" required></select>
             </div>
+    
             <div class="form-group">
-                <h3>Select Child:</h3>
-                <select name="kid" id="kid" required>
-                    <option value="" disabled selected>Choose your child</option>
-                    <option value="ahmad">Ahmad</option>
-                    <option value="lina">Lina</option>
-                    <option value="omar">Omar</option>
-                </select>
+                <label for="filterCoach">Filter by Coach:</label>
+                <select id="filterCoach"></select>
             </div>
-            <button type="submit" class="submit-btn">Enroll</button>
+    
+            <div class="form-group">
+                <label for="filterPre">Filter by Prerequisite:</label>
+                <select id="filterPre"></select>
+            </div>
+    
+            <div class="form-group">
+                <label for="activitySelect">Available Activities:</label>
+                <select id="activitySelect" required></select>
+            </div>
+    
+            <button type="button" onclick="submitEnrollment()">Submit</button>
         </form>
+    
         <div id="enrollmentResult"></div>
     </main>
-
+    <script>
+        const activities = [
+            { name: "Visual Arts", coach: "James Carter", prerequisite: "Age 7+" },
+            { name: "Cake Decorating", coach: "James Carter", prerequisite: "None" },
+            { name: "Puzzle Solving", coach: "James Carter", prerequisite: "Age 6+" },
+            { name: "Climbing", coach: "Olivia Mitchell", prerequisite: "None" },
+            { name: "Carpentry", coach: "Olivia Mitchell", prerequisite: "Age 8+" },
+            { name: "Skating", coach: "Olivia Mitchell", prerequisite: "Own Skates" },
+            { name: "Drawing", coach: "Sophia Anderson", prerequisite: "Age 6+" }
+        ];
+        
+        window.onload = () => {
+            loadKids();
+            populateFilters();
+        };
+        
+        function loadKids() {
+            const kidSelect = document.getElementById("kidSelect");
+            const kidData = JSON.parse(localStorage.getItem("kidInfo"));
+            kidSelect.innerHTML = "";
+        
+            if (kidData && kidData.name) {
+                const option = document.createElement("option");
+                option.value = kidData.name;
+                option.textContent = kidData.name;
+                kidSelect.appendChild(option);
+            } else {
+                const option = document.createElement("option");
+                option.value = "";
+                option.textContent = "No kids registered";
+                kidSelect.appendChild(option);
+            }
+        }
+        
+        function populateFilters() {
+            const coachSet = new Set();
+            const preSet = new Set();
+        
+            activities.forEach(act => {
+                coachSet.add(act.coach);
+                if (act.prerequisite !== "None") preSet.add(act.prerequisite);
+            });
+        
+            const coachSelect = document.getElementById("filterCoach");
+            coachSelect.innerHTML = '<option value="">-- Choose Coach --</option>';
+            coachSet.forEach(coach => {
+                coachSelect.innerHTML += `<option value="${coach}">${coach}</option>`;
+            });
+        
+            const preSelect = document.getElementById("filterPre");
+            preSelect.innerHTML = '<option value="">-- Choose Prerequisite --</option>';
+            preSet.forEach(pre => {
+                preSelect.innerHTML += `<option value="${pre}">${pre}</option>`;
+            });
+        
+            coachSelect.onchange = filterActivities;
+            preSelect.onchange = filterActivities;
+        }
+        
+        function filterActivities() {
+            const selectedCoach = document.getElementById("filterCoach").value;
+            const selectedPre = document.getElementById("filterPre").value;
+            const activitySelect = document.getElementById("activitySelect");
+        
+            let filtered = activities;
+        
+            if (selectedCoach) {
+                filtered = filtered.filter(act => act.coach === selectedCoach);
+            }
+        
+            if (selectedPre) {
+                filtered = filtered.filter(act => act.prerequisite === selectedPre);
+            }
+        
+            activitySelect.innerHTML = "";
+            filtered.forEach(act => {
+                const option = document.createElement("option");
+                option.value = act.name;
+                option.textContent = `${act.name} (${act.coach})`;
+                activitySelect.appendChild(option);
+            });
+        }
+        
+        function submitEnrollment() {
+            const kid = document.getElementById("kidSelect").value;
+            const activity = document.getElementById("activitySelect").value;
+            const resultDiv = document.getElementById("enrollmentResult");
+        
+            if (!kid || !activity) {
+                alert("Please select both a kid and an activity.");
+                return;
+            }
+        
+            const selected = activities.find(act => act.name === activity);
+        
+            resultDiv.innerHTML = `
+                <h3>Enrollment Summary:</h3>
+                <p><strong>Kid:</strong> ${kid}</p>
+                <p><strong>Activity:</strong> ${selected.name}</p>
+                <p><strong>Coach:</strong> ${selected.coach}</p>
+                <p><strong>Prerequisite:</strong> ${selected.prerequisite}</p>
+            `;
+        
+            document.getElementById("enrollmentForm").reset();
+            document.getElementById("activitySelect").innerHTML = "";
+        }
+        </script>
     <footer>
         <div class="contact-info">
             <div class="contact-item">
@@ -87,41 +187,5 @@
         </div>
         <p>Copyright 2025 Grow & Play. All rights reserved.</p>
     </footer>
-<script src="main.js"></script>
-    <script>
-    document.addEventListener('DOMContentLoaded', function() {
-        const enrollmentForm = document.getElementById('enrollmentForm');
-        const resultDiv = document.getElementById('enrollmentResult');
-
-        if (enrollmentForm) {
-            enrollmentForm.addEventListener('submit', function(e) {
-                e.preventDefault();
-                
-                const activity = document.getElementById('activity').value;
-                const kid = document.getElementById('kid').value;
-                
-                // Simulate saving to localStorage
-                let enrollments = JSON.parse(localStorage.getItem('enrollments')) || [];
-                enrollments.push({
-                    kid: kid,
-                    activity: activity,
-                    date: new Date().toISOString()
-                });
-                localStorage.setItem('enrollments', JSON.stringify(enrollments));
-                
-                // Show success message
-                resultDiv.innerHTML = `
-                    <div class="success-message">
-                        Successfully enrolled ${document.getElementById('kid').options[document.getElementById('kid').selectedIndex].text} 
-                        in ${document.getElementById('activity').options[document.getElementById('activity').selectedIndex].text}!
-                    </div>
-                `;
-                
-                // Reset form
-                enrollmentForm.reset();
-            });
-        }
-    });
-    </script>
 </body>
 </html>
